@@ -24,7 +24,7 @@ public class MovieCatalog {
     @GetMapping("catalog/{userId}")
     public List<CatalogItem> getCatalogs(@PathVariable("userId") String userId){
         List<CatalogItem> catalogItems = new ArrayList<>();
-        //RestTemplate  restTemplate = new RestTemplate();
+        //RestTemplate  restTemplate = new RestTemplate(); //replaced with Autowired bean object
 
 
         // step1: get all rated movieIds,
