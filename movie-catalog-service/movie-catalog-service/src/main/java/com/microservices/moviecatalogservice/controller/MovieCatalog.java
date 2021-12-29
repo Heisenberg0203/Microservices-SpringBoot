@@ -29,11 +29,11 @@ public class MovieCatalog {
 
 
         // step1: get all rated movieIds,
-        UserRatings userRatings = restTemplate.getForObject("http://localhost:8083/ratingdata/users/"+userId, UserRatings.class);
+        UserRatings userRatings = restTemplate.getForObject("http://rating-data-service/ratingdata/users/"+userId, UserRatings.class);
 
         // step2: for each movieId get description from movie-info service
         for(Rating rating:userRatings.getUserRatings()){
-            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/"+rating.getMovieId(), Movie.class);
+            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/"+rating.getMovieId(), Movie.class);
             catalogItems.add(new CatalogItem(movie.getMovieName(),movie.getDescription(),rating.getRating()));
         }
 
