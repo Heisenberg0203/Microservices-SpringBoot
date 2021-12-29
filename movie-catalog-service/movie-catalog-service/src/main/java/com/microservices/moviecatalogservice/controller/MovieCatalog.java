@@ -3,6 +3,7 @@ package com.microservices.moviecatalogservice.controller;
 import com.microservices.moviecatalogservice.bean.CatalogItem;
 import com.microservices.moviecatalogservice.bean.Movie;
 import com.microservices.moviecatalogservice.bean.Rating;
+import com.microservices.moviecatalogservice.bean.UserRatings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,15 +29,10 @@ public class MovieCatalog {
 
 
         // step1: get all rated movieIds,
-        List<Rating> ratings = Arrays.asList(
-                new Rating("111",4),
-                new Rating("122",3)
-        );
+        UserRatings userRatings = restTemplate.getForObject("http://localhost:8083/ratingdata/users/"+userId, UserRatings.class);
 
         // step2: for each movieId get description from movie-info service
-
-
-        for(Rating rating:ratings){
+        for(Rating rating:userRatings.getUserRatings()){
             Movie movie = restTemplate.getForObject("http://localhost:8082/movies/"+rating.getMovieId(), Movie.class);
             catalogItems.add(new CatalogItem(movie.getMovieName(),movie.getDescription(),rating.getRating()));
         }
